@@ -5,7 +5,9 @@ import { LoginInfoPage } from './login/loginInfoPage'; // Adjust path if needed
 
 export default function pages() {
   
-    return <LoginInfoPage />
+    return(<div> <LoginInfoPage />
 
- 
+
+</div>
+ )
 }
