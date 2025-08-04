@@ -7,7 +7,7 @@ import { restList } from './restorentDtata'; // Make sure the file name is corre
 
 export default function RestorentList() {
   const [search, setSearch] = useState('');
-  const [serch1, setSearch1] = useState(''); // using your original variable names
+  const [typeFilter, setTypeFilter] = useState(''); // renamed for clarity
 
   return (
     <div>
@@ -44,31 +44,33 @@ export default function RestorentList() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* Display filtered data */}
-      {restList
-        .filter(item =>
-          item.name.toLowerCase().includes(search.toLowerCase()) &&
-          (serch1 === '' || item.name.toLowerCase().includes(serch1.toLowerCase()))
-        )
-        .map(item => (
-          <div key={item.name}>
-            {item.name}
-          </div>
-        ))
-      }
-
       <br /><br /><br />
       <h2>search type</h2>
 
       <select
         id="restaurant"
         name="restaurant"
-        onChange={(h) => setSearch1(h.target.value)}
+        onChange={(e) => setTypeFilter(e.target.value)}
+        value={typeFilter}
       >
         <option value="">All</option>
-        <option value="knl">KNL</option>
-        <option value="kushas">Kushas</option>
+        <option value="veg">veg</option>
+        <option value="non-veg">non-veg</option>
       </select>
+
+      {/* Display filtered data */}
+      {restList
+        .filter(item => {
+          const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
+          const matchesType = typeFilter === '' || item.type === typeFilter;
+          return matchesSearch && matchesType;
+        })
+        .map(item => (
+          <div key={item.name}>
+            {item.name}
+          </div>
+        ))
+      }
     </div>
   );
 }

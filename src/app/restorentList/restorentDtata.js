@@ -1,11 +1,14 @@
 export const restList =[
     {
-        name:"Kushas"
+        name:"Kushas",        
+        type:"veg"
     },
     {
-        name:"KNL"
+        name:"KNL",
+        type:"veg"
     },
     {
-        name:"Snow Field"
+        name:"Snow Field",
+        type:"non-veg"
     },
 ]
