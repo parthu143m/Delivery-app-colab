@@ -33,11 +33,12 @@ export default function Cart() {
             <li key={index}>
               {item.name} - ₹{item.price}
               <button
-                onClick={() => removeItem(item.id)}
-                
+                onClick={() => removeItem(item.id)} 
               >
                 Remove
               </button>
+                <input type="number" min={0}></input>
+
             </li>
           ))}
         </ul>

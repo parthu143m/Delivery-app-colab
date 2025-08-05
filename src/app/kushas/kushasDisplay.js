@@ -53,6 +53,7 @@ export default function KushasMenuList() {
             button={item.button}
             item={item} 
             onAddToCart={addToCart}
+            range={item.range}
           />
         ))}
       </div>
