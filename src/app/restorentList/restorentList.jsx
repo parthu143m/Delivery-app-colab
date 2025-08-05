@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './restorentList.css';
-import { restList } from './restorentDtata'; // Make sure the file name is correct
+import { restList } from './restorentDtata'; // Make sure the file name is correc
+import RestorentDisplay from './restorentDisplay'
 
 export default function RestorentList() {
   const [search, setSearch] = useState('');
@@ -66,9 +67,14 @@ export default function RestorentList() {
           return matchesSearch && matchesType;
         })
         .map(item => (
-          <div key={item.name}>
-            {item.name}
-          </div>
+          <div>
+         <RestorentDisplay
+         key={item.id}
+         name={item.name}
+         place={item.place}
+         
+         />
+         </div>
         ))
       }
     </div>
