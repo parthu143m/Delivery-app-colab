@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './restorentList.css';
-import { restList } from './restorentDtata'; // Make sure the file name is correc
-import RestorentDisplay from './restorentDisplay'
+import { restList } from './restorentDtata'; // Ensure the filename is correct
+import RestorentDisplay from './restorentDisplay';
 
 export default function RestorentList() {
   const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState(''); // renamed for clarity
+  const [typeFilter, setTypeFilter] = useState('');
 
   return (
     <div>
@@ -38,7 +38,7 @@ export default function RestorentList() {
       </Carousel>
 
       <br />
-      <h1>search</h1>
+      <h1>Search</h1>
       <input
         type="text"
         value={search}
@@ -46,8 +46,7 @@ export default function RestorentList() {
       />
 
       <br /><br /><br />
-      <h2>search type</h2>
-
+      <h2>Search Type</h2>
       <select
         id="restaurant"
         name="restaurant"
@@ -55,8 +54,8 @@ export default function RestorentList() {
         value={typeFilter}
       >
         <option value="">All</option>
-        <option value="veg">veg</option>
-        <option value="non-veg">non-veg</option>
+        <option value="veg">Veg</option>
+        <option value="non-veg">Non-Veg</option>
       </select>
 
       {/* Display filtered data */}
@@ -67,14 +66,12 @@ export default function RestorentList() {
           return matchesSearch && matchesType;
         })
         .map(item => (
-          <div>
-         <RestorentDisplay
-         key={item.id}
-         name={item.name}
-         place={item.place}
-         
-         />
-         </div>
+          <div key={item.name}> {/* ✅ KEY ADDED */}
+            <RestorentDisplay
+              name={item.name}
+              place={item.place}
+            />
+          </div>
         ))
       }
     </div>

@@ -1,4 +1,4 @@
-export function ProductCard({ name, price, button,onAddToCart, item,range }) {
+export function ProductCard({ name, price, button,onAddToCart, item }) {
   const handleClick = () => {
     if (onAddToCart) {
       onAddToCart(item);
@@ -11,7 +11,6 @@ export function ProductCard({ name, price, button,onAddToCart, item,range }) {
         <h3 className="producttitle">{name}</h3>
         <p className="productprice">₹{price}</p>
         <button onClick={handleClick}>{button}</button>
-        
       </div>
     </div>
   );
