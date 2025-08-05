@@ -41,6 +41,7 @@ export default function Cart() {
         </ul>
       )}
       <button onClick={clear} className="btn btn-warning mt-3">Clear All</button>
+      <h2>total:</h2>
     </div>
   );
 }
