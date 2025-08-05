@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import DisCart from './cartdisplay';
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -30,16 +31,12 @@ export default function Cart() {
       ) : (
         <ul>
           {cartItems.map((item, index) => (
-            <li key={index}>
-              {item.name} - ₹{item.price}
-              <button
-                onClick={() => removeItem(item.id)} 
-              >
-                Remove
-              </button>
-                <input type="number" min={0}></input>
-
-            </li>
+            <DisCart
+            name={item.name}
+            price={item.price}
+            key={item.id}
+            handleRemove={() => removeItem(item.id)}
+            />
           ))}
         </ul>
       )}
