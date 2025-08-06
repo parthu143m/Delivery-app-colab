@@ -6,6 +6,7 @@ import './restorentList.css';
 import { restList } from './restorentDtata'; // Ensure the filename is correct
 import RestorentDisplay from './restorentDisplay';
 
+
 export default function RestorentList() {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
@@ -74,6 +75,7 @@ export default function RestorentList() {
           </div>
         ))
       }
+    
     </div>
   );
 }

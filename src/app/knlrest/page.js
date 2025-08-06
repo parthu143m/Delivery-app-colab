@@ -6,7 +6,7 @@ import { Data } from '../data/page';
 import { ProductCard } from '../universaldisplay/page'; 
 
 
-export default function KushasMenuList() {
+export default function KushasMenuLit() {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState(''); 
   const [cart, setCart] = useState([]);
@@ -20,12 +20,12 @@ export default function KushasMenuList() {
       return;
     }
 
-    if (item.id >= 1 && item.id <= 4) {
+    if (item.id >= 5 && item.id <= 8) {
       const updatedCart = [...existingCart, item];
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     } else {
-      alert("Only items with ID 1 to 3 can be added to the cart.");
+      alert("Only items with ID 5 to 8 can be added to the cart.");
     }
   };
 
@@ -62,7 +62,7 @@ export default function KushasMenuList() {
           .filter(item => {
             const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
             const matchesType = typeFilter === '' || item.type === typeFilter;
-            const matchesId = item.id >= 1 && item.id <= 4;
+            const matchesId = item.id >= 5 && item.id <= 8;
             return matchesSearch && matchesType && matchesId;
           })
           .map(item => (
