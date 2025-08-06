@@ -2,7 +2,7 @@
 
 import React from 'react';
 import RestorentList from '../restorentList/restorentList';
-import KushasMenuList from '../kushas/kushasDisplay';
+import KushasMenuList from '../kushas/page';
 
 
 export default function Maindisplay(){
