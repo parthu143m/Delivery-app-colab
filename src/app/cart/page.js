@@ -4,7 +4,7 @@ import DisCart from './cartdisplay';
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
-  const [itemTotals, setItemTotals] = useState({}); // 👈 to track total of each item
+  const [itemTotals, setItemTotals] = useState({}); 
 
   function clear() {
     localStorage.removeItem('cart');
@@ -24,7 +24,7 @@ export default function Cart() {
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
 
-    // remove that item's total also
+ 
     setItemTotals((prev) => {
       const updated = { ...prev };
       delete updated[id];
@@ -32,7 +32,7 @@ export default function Cart() {
     });
   };
 
-  // 👇 Add this line to calculate total from itemTotals
+
   const totalPrice = Object.values(itemTotals).reduce((acc, val) => acc + val, 0);
 
   return (
@@ -49,7 +49,7 @@ export default function Cart() {
               price={item.price}
               handleRemove={() => removeItem(item.id)}
 
-              // 👇 Only this line added
+           
               onTotalChange={(total) =>
                 setItemTotals((prev) => ({ ...prev, [item.id]: total }))
               }
@@ -58,7 +58,7 @@ export default function Cart() {
         </ul>
       )}
       
-      {/* 👇 Show total */}
+    
       <h4 className="mt-3">Total: ₹{totalPrice}</h4>
 
       <button onClick={clear} className="btn btn-warning mt-3">Clear All</button>
