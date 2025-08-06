@@ -1,15 +1,28 @@
 'use client';
 import { useState } from 'react';
-import { Carousel } from 'react-bootstrap';
+import { Button, Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './restorentList.css';
 import { restList } from './restorentDtata'; // Ensure the filename is correct
 import RestorentDisplay from './restorentDisplay';
 
-
 export default function RestorentList() {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+
+  // Handle button click by restaurant name
+  const handleClick = (name) => {
+    if (name === "KNL") {
+      window.location.href = './knlrest';
+
+    } else if (name === "Snow Field") {
+             window.location.href = './snowfield';
+    } else if (name === "Kushas") {
+       window.location.href = './kushas';
+    } else {
+      alert(`${name} is clicked`);
+    }
+  };
 
   return (
     <div>
@@ -59,7 +72,7 @@ export default function RestorentList() {
         <option value="non-veg">Non-Veg</option>
       </select>
 
-      {/* Display filtered data */}
+      {/* Display filtered restaurants */}
       {restList
         .filter(item => {
           const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
@@ -67,15 +80,26 @@ export default function RestorentList() {
           return matchesSearch && matchesType;
         })
         .map(item => (
-          <div key={item.name}> {/* ✅ KEY ADDED */}
-            <RestorentDisplay
-              name={item.name}
-              place={item.place}
-            />
+          <div key={item.name}>
+            {/* Restaurant name as clickable button */}
+            <button
+              onClick={() => handleClick(item.name)}
+              style={{
+                margin: '10px 0',
+                padding: '10px 20px',
+                backgroundColor: '#f8f8f8',
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              <RestorentDisplay name={item.name} place={item.place}/>
+            </button>
+
           </div>
         ))
       }
-    
     </div>
   );
 }

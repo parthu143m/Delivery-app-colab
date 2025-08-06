@@ -20,12 +20,13 @@ export default function KushasMenuLite() {
       return;
     }
 
-    if (item.id >= 9 && item.id <= 12) {
+    if (existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4) && existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8) ) {
+      alert("ihi")
+      
+    } else {
       const updatedCart = [...existingCart, item];
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-    } else {
-      alert("Only items with ID 5 to 8 can be added to the cart.");
     }
   };
 

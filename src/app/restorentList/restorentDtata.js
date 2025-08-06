@@ -1,14 +1,17 @@
 export const restList =[
     {
         name:"Kushas",        
-        type:"veg"
+        type:"veg",
+        place:"venkata"
     },
     {
         name:"KNL",
-        type:"veg"
+        type:"veg",
+        place:"venkata"
     },
     {
         name:"Snow Field",
-        type:"non-veg"
+        type:"non-veg",
+        place:"venkata"
     },
 ]
