@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]); 
   const [itemTotals, setItemTotals] = useState({});
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function Cart() {
   const placeOrder = async () => {
     try {
       const userId = localStorage.getItem('userId'); // assumes userId stored here
-      const restaurantId = "kmlkl"; // replace with actual restaurantId
+      const restaurantId = cartItems.length > 0 ? cartItems[0].restid : null;
 
       // Prepare items for order
       const orderItems = cartItems.map((item) => ({
@@ -48,7 +48,11 @@ export default function Cart() {
       }));
 
       // Send POST request using Axios
-      const response = await axios.post('/api/orders', { userId, items: orderItems, restaurantId });
+      const response = await axios.post('/api/orders', {
+        userId,
+        items: orderItems,
+        restaurantId,
+      });
 
       alert('Order sent');
       clear();
@@ -57,9 +61,16 @@ export default function Cart() {
     }
   };
 
+  const restId = cartItems.length > 0 ? cartItems[0].restid : null;
+
   return (
     <div className="mt-4">
       <h2>Cart</h2>
+
+      {restId && (
+        <h4 className="text-muted">Restaurant ID: {restId}</h4>
+      )}
+
       {cartItems.length === 0 ? (
         <p>No items in cart.</p>
       ) : (
@@ -67,7 +78,12 @@ export default function Cart() {
           {cartItems.map((item) => (
             <li key={item.id}>
               {item.name} - ₹{item.price} x {item.quantity || 1}
-              <button onClick={() => removeItem(item.id)}>Remove</button>
+              <button
+                onClick={() => removeItem(item.id)}
+                className="btn btn-sm btn-danger ms-2"
+              >
+                Remove
+              </button>
             </li>
           ))}
         </ul>
@@ -75,7 +91,7 @@ export default function Cart() {
 
       <h4 className="mt-3">Total: ₹{totalPrice}</h4>
 
-      <button onClick={clear} className="btn btn-warning mt-3">
+      <button onClick={clear} className="btn btn-warning mt-3 me-3">
         Clear All
       </button>
       <button onClick={placeOrder} className="btn btn-primary mt-3">
