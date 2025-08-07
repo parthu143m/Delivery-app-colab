@@ -20,7 +20,7 @@ export default function KushasMenuLite() {
       return;
     }
 
-    if (existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4) && existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8) ) {
+    if (existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4) || existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8) ) {
       alert("ihi")
       
     } else {

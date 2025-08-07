@@ -20,12 +20,13 @@ export default function KushasMenuLit() {
       return;
     }
 
-    if (existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) && existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4)) {
+    if (existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) || existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4)) {
       alert("yugiupiu9p8y")
     } else {
      const updatedCart = [...existingCart, item];
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
+      
     }
   };
 

@@ -19,8 +19,8 @@ export default function KushasMenuList() {
       alert("Item already exists in the cart.");
       return;
     }
-
-    if (existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8 && existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12))) {
+  
+    if (existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) || existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8)) {
      alert("ihhihu")
     } else {
        const updatedCart = [...existingCart, item];
