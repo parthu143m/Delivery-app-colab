@@ -32,3 +32,23 @@ export async function POST(request) {
     return NextResponse.json({ error: "Server Error" }, { status: 500 });
   }
 }
+
+export async function GET(request) {
+  try {
+    await connectionToDatabase();
+
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json({ error: "Missing userId in query" }, { status: 400 });
+    }
+
+    const userOrders = await Order.find({ userId }).sort({ orderDate: -1 });
+
+    return NextResponse.json(userOrders, { status: 200 });
+  } catch (err) {
+    console.error("Fetch order error:", err);
+    return NextResponse.json({ error: "Server Error" }, { status: 500 });
+  }
+}
