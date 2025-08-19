@@ -11,6 +11,10 @@ export default function KushasMenuList() {
   const [typeFilter, setTypeFilter] = useState(''); 
   const [cart, setCart] = useState([]);
 
+
+  
+
+
   const addToCart = (item) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
     const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
@@ -23,7 +27,7 @@ export default function KushasMenuList() {
     if (existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) || existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8)) {
      alert("ihhihu")
     } else {
-       const updatedCart = [...existingCart, item];
+      const updatedCart = [...existingCart, item];
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }

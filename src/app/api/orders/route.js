@@ -6,7 +6,7 @@ export async function POST(request) {
   try {
     await connectionToDatabase();
 
-    const { userId, items, restaurantId } = await request.json();
+    const { userId, items, restaurantId} = await request.json();
 
     if (!userId || !items || !restaurantId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -22,6 +22,7 @@ export async function POST(request) {
       totalPrice,
       restaurantId,
       orderDate: new Date(),
+      
     });
 
     await newOrder.save();

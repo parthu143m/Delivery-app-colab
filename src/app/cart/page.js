@@ -7,6 +7,9 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [itemTotals, setItemTotals] = useState({});
 
+   
+  
+
   // Load cart from localStorage on first render
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
@@ -73,6 +76,7 @@ export default function Cart() {
         userId,
         items: orderItems,
         restaurantId,
+    
       });
 
       alert('Order placed successfully!');
