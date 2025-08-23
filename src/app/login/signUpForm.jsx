@@ -60,7 +60,7 @@ export default function Home({ handleBacktoLogin }) {
       setOtpVerified(true);
       alert("Phone number verified ✅");
       const response = await axios.post('/api/users', { name, email, phone });
-      window.location.href = "./login";
+      window.location.href = "./";
 
     } catch (error) {
       
