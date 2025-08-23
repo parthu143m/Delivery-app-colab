@@ -1,4 +1,4 @@
-import LoginForm from './loginForm';
+import Home from './page';
 import ForgotForm from './forgotForm'
 import SignUpForm from './signUpForm'
 
@@ -8,7 +8,7 @@ export default function TotalForm({ShowLoginForm,ShowFPform,ShowSignUpForm,handl
     return(
         <div>
       
-           {ShowLoginForm && <LoginForm handleFPClick={handleFPClick} handleSignUp={handleSignUp} ></LoginForm>}
+           {ShowLoginForm && <Home handleFPClick={handleFPClick} handleSignUp={handleSignUp} ></Home>}
            {ShowFPform && <ForgotForm handleBacktoLogin={handleBacktoLogin} ></ForgotForm>}
            {ShowSignUpForm && <SignUpForm handleBacktoLogin={handleBacktoLogin}  ></SignUpForm>}
 

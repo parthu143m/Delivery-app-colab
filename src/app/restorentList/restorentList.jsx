@@ -1,24 +1,45 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './restorentList.css';
 import { restList } from './restorentDtata'; // Ensure the filename is correct
 import RestorentDisplay from './restorentDisplay';
+import { useRouter } from "next/navigation";
 
 export default function RestorentList() {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [cartCount, setCartCount] = useState(0);
+  const router = useRouter();
+
+  // Update cart count on load
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCartCount(JSON.parse(savedCart).length);
+    }
+  }, []);
+
+  // Update cart count whenever cart changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedCart = localStorage.getItem('cart');
+      setCartCount(savedCart ? JSON.parse(savedCart).length : 0);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   // Handle button click by restaurant name
   const handleClick = (name) => {
     if (name === "KNL") {
       window.location.href = './knlrest';
-
     } else if (name === "Snow Field") {
-             window.location.href = './snowfield';
+      window.location.href = './snowfield';
     } else if (name === "Kushas") {
-       window.location.href = './kushas';
+      window.location.href = './kushas';
     } else {
       alert(`${name} is clicked`);
     }
@@ -96,10 +117,14 @@ export default function RestorentList() {
             >
               <RestorentDisplay name={item.name} place={item.place}/>
             </button>
-
           </div>
         ))
       }
+
+      {/* GO TO CART button with item count */}
+      <Button onClick={() => router.push('/cart')} className="mt-3">
+        GO TO CART ({cartCount})
+      </Button>
     </div>
   );
 }

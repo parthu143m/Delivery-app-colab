@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema({
   totalPrice: { type: Number, required: true },
   restaurantId: { type: String, required: true },
   orderDate: { type: Date, default: Date.now },
+  aa : { type: String, require: true },
 
 });
 

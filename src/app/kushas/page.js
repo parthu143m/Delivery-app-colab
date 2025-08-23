@@ -1,20 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Data } from '../data/page'; 
-import { ProductCard } from '../universaldisplay/page'; 
-
+import { Data } from '../data/page';
+import { ProductCard } from '../universaldisplay/page';
 
 export default function KushasMenuList() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState(''); 
+  const [typeFilter, setTypeFilter] = useState('');
   const [cart, setCart] = useState([]);
 
+  // ✅ Authentication check
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+    } else {
+      setLoading(false);
+    }
+  }, [router]);
 
-  
-
-
+  // ✅ Add item to cart
   const addToCart = (item) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
     const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
@@ -23,15 +32,26 @@ export default function KushasMenuList() {
       alert("Item already exists in the cart.");
       return;
     }
-  
-    if (existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) || existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8)) {
-     alert("ihhihu")
-    } else {
-      const updatedCart = [...existingCart, item];
-      setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+    // ✅ Restriction logic
+    if (
+      existingCart.some(cartItem => (cartItem.id >= 9 && cartItem.id <= 12)) ||
+      existingCart.some(cartItem => (cartItem.id >= 5 && cartItem.id <= 8))
+    ) {
+      alert("ihhihu");
+      return;
     }
+
+    const updatedCart = [...existingCart, item];
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
+
+  if (loading) {
+    return (
+      <p>Checking authentication...</p> // Loader until auth check is done
+    );
+  }
 
   return (
     <div className="container mt-4">
@@ -52,8 +72,8 @@ export default function KushasMenuList() {
         id="restaurant"
         name="restaurant"
         className="form-select mb-4"
-        onChange={(e) => setTypeFilter(e.target.value)}
         value={typeFilter}
+        onChange={(e) => setTypeFilter(e.target.value)}
       >
         <option value="">All</option>
         <option value="veg">Veg</option>

@@ -1,15 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Data } from '../data/page'; 
 import { ProductCard } from '../universaldisplay/page'; 
 
-
 export default function KushasMenuLit() {
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState(''); 
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      router.push('/login'); 
+    } else {
+      setLoading(false); 
+    }
+  }, [router]);
 
   const addToCart = (item) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -20,15 +32,19 @@ export default function KushasMenuLit() {
       return;
     }
 
-    if (existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) || existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4)) {
+    if (
+      existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) || 
+      existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4)
+    ) {
       alert("yugiupiu9p8y")
     } else {
-     const updatedCart = [...existingCart, item];
+      const updatedCart = [...existingCart, item];
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-      
     }
   };
+
+  if (loading) return <p>Loading...</p>; // Prevents flash before redirect
 
   return (
     <div className="container mt-4">

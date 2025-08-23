@@ -2,10 +2,24 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function MyOrders() {
+  const router = useRouter();
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // ✅ Authentication check
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      router.push('/login');
+    } else {
+      setLoading(false);
+    }
+  }, [router]);
+
+  // Fetch orders
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -20,6 +34,8 @@ export default function MyOrders() {
 
     fetchOrders();
   }, []);
+
+  if (loading) return <p>Checking authentication...</p>;
 
   return (
     <div className="mt-4">
