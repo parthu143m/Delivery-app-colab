@@ -59,7 +59,9 @@ export default function Home({ handleBacktoLogin }) {
       console.log("Phone verified user:", result.user);
       setOtpVerified(true);
       alert("Phone number verified ✅");
-      const response = await axios.post('/api/users', { name, email });
+      const response = await axios.post('/api/users', { name, email, phone });
+      window.location.href = "./login";
+
     } catch (error) {
       
       alert("Invalid OTP ❌");
