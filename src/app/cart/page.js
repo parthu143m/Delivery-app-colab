@@ -28,15 +28,13 @@ export default function Cart() {
       const parsedCart = JSON.parse(savedCart);
       setCartItems(parsedCart);
 
-      const totals = {};
-      parsedCart.forEach(item => {
-        totals[item.id] = item.price * (item.quantity || 1);
-      });
-      setItemTotals(totals);
+      
+      
+      
     }
   }, []);
 
-  // ✅ Recalculate totals when cart changes
+  
   useEffect(() => {
     const totals = {};
     cartItems.forEach(item => {
