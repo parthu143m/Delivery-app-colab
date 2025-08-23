@@ -126,6 +126,13 @@ export default function Cart() {
       <button onClick={placeOrder} className="btn btn-primary mt-3">
         Place Order
       </button>
+<div>
+   <button onClick={() => window.location.href = "/orderHistory"}>
+              ORDERS</button>
+              
+</div>
+      
     </div>
+   
   );
 }

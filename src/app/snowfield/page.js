@@ -78,6 +78,9 @@ export default function KushasMenuLite() {
           ))
         }
       </div>
+        <button onClick={() => window.location.href = "/cart"}>
+              GO TO CART</button> 
     </div>
+    
   );
 }

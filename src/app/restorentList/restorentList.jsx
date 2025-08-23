@@ -101,8 +101,11 @@ export default function RestorentList() {
               <RestorentDisplay name={item.name} place={item.place}/>
             </button>
           </div>
+          
+           
         ))
       }
+     
 
       
     </div>

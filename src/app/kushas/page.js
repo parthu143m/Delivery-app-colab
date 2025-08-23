@@ -101,6 +101,8 @@ export default function KushasMenuList() {
           ))
         }
       </div>
+      <button onClick={() => window.location.href = "/cart"}>
+              GO TO CART</button> 
     </div>
   );
 }
