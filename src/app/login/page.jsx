@@ -42,7 +42,7 @@ export default function Home({ handleFPClick, handleSignUp }) {
     return (
         <div style={{ padding: '20px' }}>
             <h2>Login</h2>
-            
+            ``
             <input
                 type="text"
                 placeholder="Enter Name"

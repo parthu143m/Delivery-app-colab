@@ -9,7 +9,8 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [itemTotals, setItemTotals] = useState({});
   const [loading, setLoading] = useState(true);
-  const aa  =  "gg"
+  const [quantities, setQuantities] = useState({}); // ✅ quantity state
+  const aa  =  "gg";
 
   // ✅ Authentication check
   useEffect(() => {
@@ -28,26 +29,30 @@ export default function Cart() {
       const parsedCart = JSON.parse(savedCart);
       setCartItems(parsedCart);
 
-      
-      
-      
+      // Initialize quantities state
+      const initialQuantities = {};
+      parsedCart.forEach(item => {
+        initialQuantities[item.id] = item.quantity || 1;
+      });
+      setQuantities(initialQuantities);
     }
   }, []);
 
-  
+  // ✅ Calculate totals
   useEffect(() => {
     const totals = {};
     cartItems.forEach(item => {
-      totals[item.id] = item.price * (item.quantity || 1);
+      totals[item.id] = item.price * (quantities[item.id] || 1);
     });
     setItemTotals(totals);
-  }, [cartItems]);
+  }, [cartItems, quantities]);
 
   // ✅ Clear cart
   function clear() {
     localStorage.removeItem('cart');
     setCartItems([]);
     setItemTotals({});
+    setQuantities({});
   }
 
   // ✅ Remove item
@@ -55,6 +60,21 @@ export default function Cart() {
     const updatedCart = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+    const updatedQuantities = { ...quantities };
+    delete updatedQuantities[id];
+    setQuantities(updatedQuantities);
+  };
+
+  // ✅ Update quantity using useState
+  const updateQuantity = (id, delta) => {
+    setQuantities(prev => {
+      const newQty = (prev[id] || 1) + delta;
+      return {
+        ...prev,
+        [id]: newQty > 0 ? newQty : 1,
+      };
+    });
   };
 
   // ✅ Place order
@@ -72,7 +92,7 @@ export default function Cart() {
         itemId: item.id,
         name: item.name,
         price: item.price,
-        quantity: item.quantity || 1,
+        quantity: quantities[item.id] || 1,
       }));
 
       await axios.post('/api/orders', {
@@ -80,7 +100,6 @@ export default function Cart() {
         items: orderItems,
         restaurantId,
         aa,
-
       });
 
       alert('Order placed successfully!');
@@ -104,8 +123,23 @@ export default function Cart() {
       ) : (
         <ul className="list-unstyled">
           {cartItems.map((item) => (
-            <li key={item.id}>
-              {item.name} - ₹{item.price} x {item.quantity || 1}
+            <li key={item.id} className="mb-2">
+              {item.name} - ₹{item.price} x {quantities[item.id] || 1}
+
+              <button
+                onClick={() => updateQuantity(item.id, -1)}
+                className="btn btn-sm btn-secondary ms-2"
+              >
+                -
+              </button>
+
+              <button
+                onClick={() => updateQuantity(item.id, 1)}
+                className="btn btn-sm btn-secondary ms-1"
+              >
+                +
+              </button>
+
               <button
                 onClick={() => removeItem(item.id)}
                 className="btn btn-sm btn-danger ms-2"
@@ -126,13 +160,12 @@ export default function Cart() {
       <button onClick={placeOrder} className="btn btn-primary mt-3">
         Place Order
       </button>
-<div>
-   <button onClick={() => window.location.href = "/orderHistory"}>
-              ORDERS</button>
-              
-</div>
-      
+
+      <div className="mt-3">
+        <button onClick={() => window.location.href = "/orderHistory"} className="btn btn-info">
+          ORDERS
+        </button>
+      </div>
     </div>
-   
   );
 }
