@@ -1,28 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Data } from '../data/page'; 
-import { ProductCard } from '../universaldisplay/page'; 
+import { Data } from '../data/page';
+import { ProductCard } from '../universaldisplay/page';
 
-export default function KushasMenuLit() {
+export default function KushasMenuList() {
   const router = useRouter();
-  const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState(''); 
-  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+  const [cart, setCart] = useState([]);
 
-  
+  // ✅ Authentication check
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      router.push('/login'); 
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
     } else {
-      setLoading(false); 
+      setLoading(false);
     }
   }, [router]);
 
+  // ✅ Add item to cart
   const addToCart = (item) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
     const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
@@ -32,19 +33,25 @@ export default function KushasMenuLit() {
       return;
     }
 
+    // ✅ Restriction logic
     if (
-      existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12) || 
-      existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4)
+      existingCart.some(cartItem => (cartItem.id >= 9 && cartItem.id <= 12)) ||
+      existingCart.some(cartItem => (cartItem.id >= 1 && cartItem.id <= 4))
     ) {
-      alert("yugiupiu9p8y")
-    } else {
-      const updatedCart = [...existingCart, item];
-      setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      alert("ihhihu");
+      return;
     }
+
+    const updatedCart = [...existingCart, item];
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
-  if (loading) return <p>Loading...</p>; // Prevents flash before redirect
+  if (loading) {
+    return (
+      <p>Checking authentication...</p> // Loader until auth check is done
+    );
+  }
 
   return (
     <div className="container mt-4">
@@ -65,8 +72,8 @@ export default function KushasMenuLit() {
         id="restaurant"
         name="restaurant"
         className="form-select mb-4"
-        onChange={(e) => setTypeFilter(e.target.value)}
         value={typeFilter}
+        onChange={(e) => setTypeFilter(e.target.value)}
       >
         <option value="">All</option>
         <option value="veg">Veg</option>

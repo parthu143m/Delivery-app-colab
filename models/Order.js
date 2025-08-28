@@ -15,6 +15,11 @@ const orderSchema = new mongoose.Schema({
   restaurantId: { type: String, required: true },
   orderDate: { type: Date, default: Date.now },
   aa : { type: String, require: true },
+  orderId: { 
+    type: String,   
+    required: true, 
+    unique: true 
+  },
 
 });
 

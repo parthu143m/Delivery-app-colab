@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import connectionToDatabase from "../../../../lib/mongoose";
 import Order from "../../../../models/Order";
+import {generateOrderId} from "../../../../lib/generateOrderId";  // ✅ FIXED
 
 export async function POST(request) {
   try {
     await connectionToDatabase();
 
-    const { userId, items, restaurantId,aa} = await request.json();
+    const { userId, items, restaurantId, aa } = await request.json();
 
     if (!userId || !items || !restaurantId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -15,6 +16,8 @@ export async function POST(request) {
     const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+    const orderId = await generateOrderId(); // ✅ call async function
+
     const newOrder = new Order({
       userId,
       items,
@@ -22,8 +25,8 @@ export async function POST(request) {
       totalPrice,
       restaurantId,
       aa,
+      orderId,
       orderDate: new Date(),
-      
     });
 
     await newOrder.save();

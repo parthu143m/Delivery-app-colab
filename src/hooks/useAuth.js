@@ -18,5 +18,5 @@ export default function useAuth(redirectTo = "/login") {
     }
   }, [router, redirectTo]);
 
-  return loading; // true while checking authentication
+  return loading; 
 }
