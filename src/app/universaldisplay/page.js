@@ -1,3 +1,4 @@
+'use client'
 export function ProductCard({ name, price, button,onAddToCart, item }) {
   const handleClick = () => {
     if (onAddToCart) {
