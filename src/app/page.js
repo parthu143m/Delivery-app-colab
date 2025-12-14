@@ -1,4 +1,5 @@
-import Image from "next/image";
+'use client';
+
 import { LoginInfoPage } from './login/loginInfoPage'; // Adjust path if needed
 
 
