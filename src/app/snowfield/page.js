@@ -1,33 +1,56 @@
 'use client';
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRouter } from "next/navigation";
 import { Data } from '../data/page'; 
 import { ProductCard } from '../universaldisplay/page'; 
+import { showToast } from '../../toaster/page'; 
 
 
 export default function KushasMenuLite() {
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState(''); 
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        router.push("/login");
+      } else {
+        setLoading(false);
+      }
+    }, [router]);
 
   const addToCart = (item) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
     const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
 
     if (isItemAlreadyInCart) {
-      alert("Item already exists in the cart.");
+      showToast("Item already exists in the cart.");
       return;
     }
 
     if (existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4) || existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8) ) {
-      alert("ihi")
+      showToast("You Can Select From Only One Restuarent","danger");
       
     } else {
       const updatedCart = [...existingCart, item];
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-    }
+       // ✅ Added success toast
+    showToast("Added to cart successfully!", "success");
+  };
+  
+  if (loading) {
+    return (
+      <p>Checking authentication...</p>
+    );
+  }
+    
   };
 
   return (

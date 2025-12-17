@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Data } from '../data/page';
 import { ProductCard } from '../universaldisplay/page';
+// Correct import based on your folder structure
+import { showToast } from '../../toaster/page'; 
 
 export default function KushasMenuList() {
   const router = useRouter();
@@ -29,7 +31,8 @@ export default function KushasMenuList() {
     const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
 
     if (isItemAlreadyInCart) {
-      alert("Item already exists in the cart.");
+    
+      showToast("Item already exists in the cart.", "danger");
       return;
     }
 
@@ -38,18 +41,22 @@ export default function KushasMenuList() {
       existingCart.some(cartItem => (cartItem.id >= 9 && cartItem.id <= 12)) ||
       existingCart.some(cartItem => (cartItem.id >= 1 && cartItem.id <= 4))
     ) {
-      alert("ihhihu");
+      // Replaced alert with showToast
+      showToast("You Can Select From Only One Restuarent", "danger");
       return;
     }
 
     const updatedCart = [...existingCart, item];
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+    // ✅ Added success toast
+    showToast("Added to cart successfully!", "success");
   };
 
   if (loading) {
     return (
-      <p>Checking authentication...</p> // Loader until auth check is done
+      <p>Checking authentication...</p>
     );
   }
 
