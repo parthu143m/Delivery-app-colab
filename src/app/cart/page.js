@@ -162,7 +162,7 @@ export default function Cart() {
       </button>
 
       <div className="mt-3">
-        <button onClick={() => window.location.href = "/orderHistory"} className="btn btn-info">
+        <button onClick={() => window.location.href = "/accepted-orders"} className="btn btn-info">
           ORDERS
         </button>
       </div>
