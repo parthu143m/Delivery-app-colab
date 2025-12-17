@@ -24,7 +24,7 @@ export default function Home({ handleFPClick, handleSignUp }) {
     const handleCheck = () => {
         // Find matching user
         const matchedUser = users.find(
-            (user) => user.name === inputName && user.email === inputEmail
+            (user) => user.phone === inputName && user.email === inputEmail
         );
 
         if (matchedUser) {
