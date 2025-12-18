@@ -1,19 +1,28 @@
-import connectToDatabase from "../../../../lib/mongoose"; 
+import connectToDatabase from "../../../../lib/mongoose";
+import Location from "../../../../models/location";
 
 export async function POST(req) {
   try {
+    await connectToDatabase(); // just connect
+
     const { url } = await req.json();
-    console.log("Received URL:", url); 
+    console.log("Received URL:", url);
 
-    const db = await connectToDatabase();
-    const collection = db.connection.db.collection("locations");
+    // ✅ USE MONGOOSE MODEL
+    await Location.create({
+      url,
+      createdAt: new Date(),
+    });
 
-    const result = await collection.insertOne({ url, createdAt: new Date() });
-    console.log("Inserted ID:", result.insertedId);
-
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
+    return new Response(
+      JSON.stringify({ success: true }),
+      { status: 200 }
+    );
   } catch (err) {
     console.error("MongoDB error:", err);
-    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500 });
+    return new Response(
+      JSON.stringify({ success: false, error: err.message }),
+      { status: 500 }
+    );
   }
 }
