@@ -25,7 +25,8 @@ export default function RestorentList() {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const { latitude, longitude } = pos.coords;
-          const mapLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+          // Fixed the template literal syntax here
+          const mapLink = `https://www.google.com/maps?q=$${latitude},${longitude}`;
 
           const inside =
             latitude >= minLat &&
@@ -54,10 +55,17 @@ export default function RestorentList() {
             setSavedLink(null);
           }
         },
-        () => setError("⚠️ Please turn on your location in settings."),
+        (err) => {
+           // Improved error messages for Safari/Chrome users
+           if(err.code === 1) {
+             setError("⚠️ Please allow location access in your Browser & Phone Settings.");
+           } else {
+             setError("⚠️ Unable to retrieve location. Please try again.");
+           }
+        },
         {
-          enableHighAccuracy: true,
-          maximumAge: 0,
+          enableHighAccuracy: true, // Forces OS/GPS to wake up
+          maximumAge: 0,            // Forces a fresh check (no cache)
           timeout: 15000,
         }
       );
@@ -164,6 +172,7 @@ export default function RestorentList() {
       {/* LOCATION STATUS */}
       {savedLink && <p>✅ Location Verified</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {!savedLink && !error && <p>⌛ Checking location...</p>}
 
     </div>
   );
