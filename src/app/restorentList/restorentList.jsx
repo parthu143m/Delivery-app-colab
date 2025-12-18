@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Button, Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './restorentList.css';
-import { restList } from './restorentDtata'; // Ensure the filename is correct
+import { restList } from './restorentDtata';
 import RestorentDisplay from './restorentDisplay';
 import { useRouter } from "next/navigation";
 
@@ -11,11 +11,69 @@ export default function RestorentList() {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
 
+  // ===== LOCATION CODE =====
+  const [savedLink, setSavedLink] = useState(null);
+  const [error, setError] = useState(null);
+
+  const minLat = 15.77;
+  const maxLat = 16.20;
+  const minLon = 78.00;
+  const maxLon = 78.12;
+
+  const requestLocation = async () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const { latitude, longitude } = pos.coords;
+          const mapLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+          const inside =
+            latitude >= minLat &&
+            latitude <= maxLat &&
+            longitude >= minLon &&
+            longitude <= maxLon;
+
+          if (inside) {
+            setSavedLink(mapLink);
+            setError(null);
+
+            try {
+              const res = await fetch("/api/save-location", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: mapLink }),
+              });
+
+              const data = await res.json();
+              if (data.success) console.log("✅ Location saved to MongoDB!");
+            } catch (err) {
+              console.error("API error:", err);
+            }
+          } else {
+            setError("❌ You are outside Kurnool City premises");
+            setSavedLink(null);
+          }
+        },
+        () => setError("⚠️ Please turn on your location in settings."),
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 15000,
+        }
+      );
+    } else {
+      setError("⚠️ Geolocation is not supported on this device.");
+    }
+  };
+
+  // 🔥 AUTO LOCATION ON PAGE LOAD
+  useEffect(() => {
+    requestLocation();
+  }, []);
+  // ===== LOCATION CODE END =====
+
   const router = useRouter();
 
- 
-
-  // Handle button click by restaurant name
   const handleClick = (name) => {
     if (name === "KNL") {
       window.location.href = './knlrest';
@@ -31,6 +89,7 @@ export default function RestorentList() {
   return (
     <div>
       <br />
+
       <Carousel interval={3000} pause={false} className='coroselmain'>
         <Carousel.Item className='coroselmain2'>
           <img
@@ -76,7 +135,6 @@ export default function RestorentList() {
         <option value="non-veg">Non-Veg</option>
       </select>
 
-      {/* Display filtered restaurants */}
       {restList
         .filter(item => {
           const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
@@ -85,7 +143,6 @@ export default function RestorentList() {
         })
         .map(item => (
           <div key={item.name}>
-            {/* Restaurant name as clickable button */}
             <button
               onClick={() => handleClick(item.name)}
               style={{
@@ -98,16 +155,16 @@ export default function RestorentList() {
                 fontWeight: 'bold'
               }}
             >
-              <RestorentDisplay name={item.name} place={item.place}/>
+              <RestorentDisplay name={item.name} place={item.place} />
             </button>
           </div>
-          
-           
         ))
       }
-     
 
-      
+      {/* LOCATION STATUS */}
+      {savedLink && <p>✅ Location Verified</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
     </div>
   );
 }
