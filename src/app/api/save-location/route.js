@@ -1,12 +1,12 @@
-import connectToDatabase from "../../../lib/mongodb"; 
+import connectToDatabase from "../../../../lib/mongoose"; 
 
 export async function POST(req) {
   try {
     const { url } = await req.json();
-    console.log("Received URL:", url); // debug
+    console.log("Received URL:", url); 
 
     const db = await connectToDatabase();
-    const collection = db.connection.db.collection("locations"); // collection name
+    const collection = db.connection.db.collection("locations");
 
     const result = await collection.insertOne({ url, createdAt: new Date() });
     console.log("Inserted ID:", result.insertedId);
