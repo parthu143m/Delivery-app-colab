@@ -3,9 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { Data } from '../data/page';
 import { ProductCard } from '../universaldisplay/page';
 import { showToast } from '../../toaster/page'; 
+import Link from "next/link";
+
+import RestorentDisplay from "../restorentList/restnamedisplay";
+import restuarents from "../restorentList/restuarentnamesdata";
 
 export default function KushasMenuList() {
   const router = useRouter();
@@ -27,20 +32,18 @@ export default function KushasMenuList() {
   // ✅ Add item to cart
   const addToCart = (item) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
 
-    if (isItemAlreadyInCart) {
-      showToast("Item already exists in the cart.","danger"
-      );
+    if (existingCart.some(cartItem => cartItem.id === item.id)) {
+      showToast("Item already exists in the cart.", "danger");
       return;
     }
 
-    // ✅ Restriction logic
+    // ✅ One restaurant restriction
     if (
-      existingCart.some(cartItem => (cartItem.id >= 9 && cartItem.id <= 12)) ||
-      existingCart.some(cartItem => (cartItem.id >= 5 && cartItem.id <= 8))
+      existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8) ||
+      existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12)
     ) {
-      showToast("You Can Select From Only One Restuarent");
+      showToast("You Can Select From Only One Restaurant");
       return;
     }
 
@@ -51,14 +54,16 @@ export default function KushasMenuList() {
   };
 
   if (loading) {
-    return (
-      <p>Checking authentication...</p> // Loader until auth check is done
-    );
+    return <p>Checking authentication...</p>;
   }
 
   return (
     <div className="container mt-4">
-      <h1 className="search">Search Dishes</h1>
+
+      {/* ✅ RESTAURANT CARD */}
+      <RestorentDisplay data={restuarents[2]} />
+
+      <h1 className="search mt-4">Search Dishes</h1>
 
       {/* Search Input */}
       <input
@@ -72,8 +77,6 @@ export default function KushasMenuList() {
       {/* Filter by Type */}
       <h2 className="mt-4">Search Type</h2>
       <select
-        id="restaurant"
-        name="restaurant"
         className="form-select mb-4"
         value={typeFilter}
         onChange={(e) => setTypeFilter(e.target.value)}
@@ -83,7 +86,7 @@ export default function KushasMenuList() {
         <option value="non-veg">Non-Veg</option>
       </select>
 
-      {/* Display Filtered Results */}
+      {/* Products */}
       <div className="row">
         {Data
           .filter(item => {
@@ -104,8 +107,13 @@ export default function KushasMenuList() {
           ))
         }
       </div>
-      <button onClick={() => window.location.href = "/cart"}>
-              GO TO CART</button> 
+
+
+<button onClick={() => window.location.href = "/cart"}>
+    GO TO CART
+  </button>
+
+
     </div>
   );
 }

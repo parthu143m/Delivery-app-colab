@@ -7,6 +7,8 @@ import { Data } from '../data/page';
 import { ProductCard } from '../universaldisplay/page';
 // Correct import based on your folder structure
 import { showToast } from '../../toaster/page'; 
+import RestorentDisplay from "../restorentList/restnamedisplay";
+import restuarents from "../restorentList/restuarentnamesdata";
 
 export default function KushasMenuList() {
   const router = useRouter();
@@ -50,6 +52,7 @@ export default function KushasMenuList() {
     setCart(updatedCart);
 
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+     showToast("Added to cart successfully!");
   };
 
   if (loading) {
@@ -60,6 +63,10 @@ export default function KushasMenuList() {
 
   return (
     <div className="container mt-4">
+       {/* ✅ RESTAURANT CARD AT TOP (ONLY ADDITION) */}
+            <div className="mb-4">
+              <RestorentDisplay data={restuarents[0]} />
+            </div>
       <h1 className="search">Search Dishes</h1>
 
       {/* Search Input */}

@@ -1,12 +1,13 @@
 'use client';
 
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from "next/navigation";
 import { Data } from '../data/page'; 
 import { ProductCard } from '../universaldisplay/page'; 
 import { showToast } from '../../toaster/page'; 
-
+import RestorentDisplay from "../restorentList/restnamedisplay";
+import restuarents from "../restorentList/restuarentnamesdata";
 
 export default function KushasMenuLite() {
   const router = useRouter();
@@ -15,46 +16,49 @@ export default function KushasMenuLite() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
-      const userId = localStorage.getItem("userId");
-      if (!userId) {
-        router.push("/login");
-      } else {
-        setLoading(false);
-      }
-    }, [router]);
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      router.push("/login");
+    } else {
+      setLoading(false);
+    }
+  }, [router]);
 
   const addToCart = (item) => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
     const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
 
     if (isItemAlreadyInCart) {
-      showToast("Item already exists in the cart.");
+      showToast("Item already exists in the cart."," danger");
       return;
     }
 
-    if (existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4) || existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8) ) {
-      showToast("You Can Select From Only One Restuarent","danger");
-      
+    if (
+      existingCart.some(cartItem => cartItem.id >= 1 && cartItem.id <= 4) ||
+      existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8)
+    ) {
+      showToast("You Can Select From Only One Restuarent", "danger");
     } else {
       const updatedCart = [...existingCart, item];
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-       // ✅ Added success toast
-    showToast("Added to cart successfully!", "success");
+      showToast("Added to cart successfully!", "success");
+    }
   };
-  
+
   if (loading) {
-    return (
-      <p>Checking authentication...</p>
-    );
+    return <p>Checking authentication...</p>;
   }
-    
-  };
 
   return (
     <div className="container mt-4">
+
+      {/* ✅ RESTAURANT CARD AT TOP (ONLY ADDITION) */}
+      <div className="mb-4">
+        <RestorentDisplay data={restuarents[2]} />
+      </div>
+
       <h1 className="search">Search Dishes</h1>
 
       {/* Search Input */}
@@ -101,9 +105,11 @@ export default function KushasMenuLite() {
           ))
         }
       </div>
-        <button onClick={() => window.location.href = "/cart"}>
-              GO TO CART</button> 
+
+      <button onClick={() => window.location.href = "/cart"}>
+        GO TO CART
+      </button>
+
     </div>
-    
   );
 }
