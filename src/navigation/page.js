@@ -9,7 +9,7 @@ export default function Navbar() {
       <Button onClick={() => window.location.href = "/cart"} className="mt-3">
       GO TO CART
     </Button>
-      <Link href="/profile"> Profile </Link>
+      <Link href="/Profile"> Profile </Link>
     </nav>
   );
 }
