@@ -8,6 +8,7 @@ import { ProductCard } from '../universaldisplay/page';
 import { showToast } from '../../toaster/page'; 
 import RestorentDisplay from "../restorentList/restnamedisplay";
 import restuarents from "../restorentList/restuarentnamesdata";
+import Navbar from '@/navigation/page';
 
 export default function KushasMenuLite() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function KushasMenuLite() {
     const isItemAlreadyInCart = existingCart.some(cartItem => cartItem.id === item.id);
 
     if (isItemAlreadyInCart) {
-      showToast("Item already exists in the cart."," danger");
+     showToast("Item already exists in the cart.", "danger");
       return;
     }
 
@@ -56,7 +57,7 @@ export default function KushasMenuLite() {
 
       {/* ✅ RESTAURANT CARD AT TOP (ONLY ADDITION) */}
       <div className="mb-4">
-        <RestorentDisplay data={restuarents[2]} />
+        <RestorentDisplay data={restuarents[1]} />
       </div>
 
       <h1 className="search">Search Dishes</h1>
@@ -109,6 +110,7 @@ export default function KushasMenuLite() {
       <button onClick={() => window.location.href = "/cart"}>
         GO TO CART
       </button>
+      <Navbar />
 
     </div>
   );

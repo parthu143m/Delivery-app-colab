@@ -9,6 +9,7 @@ import { ProductCard } from '../universaldisplay/page';
 import { showToast } from '../../toaster/page'; 
 import RestorentDisplay from "../restorentList/restnamedisplay";
 import restuarents from "../restorentList/restuarentnamesdata";
+import Navbar from '@/navigation/page';
 
 export default function KushasMenuList() {
   const router = useRouter();
@@ -115,6 +116,7 @@ export default function KushasMenuList() {
       </div>
       <button onClick={() => window.location.href = "/cart"}>
               GO TO CART</button> 
+      <Navbar />
     </div>
   );
 }

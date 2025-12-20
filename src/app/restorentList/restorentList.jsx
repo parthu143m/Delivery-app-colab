@@ -6,6 +6,7 @@ import './restorentList.css';
 import { restList } from './restorentDtata';
 import RestorentDisplay from './restorentDisplay';
 import { useRouter } from "next/navigation";
+import Navbar from '@/navigation/page';
 
 export default function RestorentList() {
   const [search, setSearch] = useState('');
@@ -163,7 +164,7 @@ export default function RestorentList() {
                 fontWeight: 'bold'
               }}
             >
-              <RestorentDisplay name={item.name} place={item.place} />
+              <RestorentDisplay name={item.name} place={item.place} rating= {item.rating}  image={item.image}/>
             </button>
           </div>
         ))
@@ -173,6 +174,7 @@ export default function RestorentList() {
       {savedLink && <p>✅ Location Verified</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!savedLink && !error && <p>⌛ Checking location...</p>}
+      <Navbar />
 
     </div>
   );

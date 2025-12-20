@@ -11,6 +11,7 @@ import Link from "next/link";
 
 import RestorentDisplay from "../restorentList/restnamedisplay";
 import restuarents from "../restorentList/restuarentnamesdata";
+import Navbar from '@/navigation/page';
 
 export default function KushasMenuList() {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function KushasMenuList() {
       existingCart.some(cartItem => cartItem.id >= 5 && cartItem.id <= 8) ||
       existingCart.some(cartItem => cartItem.id >= 9 && cartItem.id <= 12)
     ) {
-      showToast("You Can Select From Only One Restaurant");
+      showToast("You Can Select From Only One Restaurant", "danger");
       return;
     }
 
@@ -113,6 +114,7 @@ export default function KushasMenuList() {
     GO TO CART
   </button>
 
+      <Navbar />
 
     </div>
   );
