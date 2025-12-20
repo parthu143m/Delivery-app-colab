@@ -24,7 +24,7 @@ export default function Profile(){
 
                 
                 <div className="row">
-                    <button onClick={() => window.location.href = "/"} style={{ backgroundColor: "green" }}>Contact Us</button>
+                    <button onClick={() => window.location.href = "/contactus"} style={{ backgroundColor: "green" }}>Contact Us</button>
                 </div>
                 <br></br>
 
